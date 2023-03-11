@@ -18,6 +18,17 @@
             u=()=>{let eT=Date.now()-t;x+=v*Math.sin((Math.PI/180)*r);y-=v*Math.cos((Math.PI/180)*r);x<0&&(x=c.width),x>c.width&&(x=0),y<0&&(y=c.height),y>c.height&&(y=0),o.forEach(i=>cC({x:x,y:y},i)&&(alert("Game Over"),location.reload())),dC(),dO(),b.forEach(i=>{i.x+=10*Math.sin(i.r),i.y-=10*Math.cos(i.r),i.x<0||i.x>c.width||i.y<0||i.y>c.height?b.splice(b.indexOf(i),1):o.forEach(j=>cC(i,j)&&(b.splice(b.indexOf(i),1),o.splice(o.indexOf(j),1)))}),eT>=500&&(o.push(rO()),t=Date.now()),requestAnimationFrame(u);};
       document.addEventListener("keydown",kD);
       c.addEventListener("mousedown",mD);
+      if (/Mobi/.test(navigator.userAgent)) {
+        window.addEventListener("deviceorientation", dOrient);
+        function dOrient(event) {
+          const gamma = event.gamma;
+          if (gamma < -5) {
+            r -= 5;
+          } else if (gamma > 5) {
+            r += 5;
+          }
+        }
+      }
       u();
     </script>
   </body>
