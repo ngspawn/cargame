@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Car Driving Game</title>
+    <style>canvas{border:1px solid #000;background-color:#9b9fac;}</style>
+  </head>
+  <body>
+    <canvas id="canvas" width="900" height="900"></canvas>
+    <script>
+      const c=document.getElementById("canvas"),ctx=c.getContext("2d"),o=[],b=[],s=6;
+      let x=c.width/2,y=c.height/2,v=0,r=0,t=0;
+      const dC=()=>{ctx.clearRect(0,0,c.width,c.height);ctx.save();ctx.translate(x,y);ctx.rotate((Math.PI/180)*r);ctx.fillStyle="#ffd72b";ctx.fillRect(-10,-20,20,40);ctx.restore();},
+            kD=e=>{e.keyCode===37?r-=5:e.keyCode===38&&v<s?v++:e.keyCode===39?r+=5:e.keyCode===40&&v>0?v--:e.keyCode===32&&(b.push({x:x,y:y,r:(Math.PI/180)*r}),t=Date.now());},
+            mD=e=>{b.push({x:x,y:y,r:(Math.PI/180)*r}),t=Date.now();},
+            dO=()=>{ctx.fillStyle="green";o.forEach(i=>ctx.fillRect(i.x,i.y,i.w,i.h));ctx.fillStyle="red";b.forEach(i=>ctx.fillRect(i.x,i.y,5,5));},
+            cC=(a,b)=>a.x<b.x+b.w&&a.x+20>b.x&&a.y<b.y+b.h&&a.y+40>b.y,
+            rO=()=>{let nO={};do{nO.x=Math.floor(Math.random()*c.width);nO.y=Math.floor(Math.random()*c.height);}while(Math.abs(nO.x-x)<160&&Math.abs(nO.y-y)<160);nO.w=50;nO.h=50;return nO;},
+            u=()=>{let eT=Date.now()-t;x+=v*Math.sin((Math.PI/180)*r);y-=v*Math.cos((Math.PI/180)*r);x<0&&(x=c.width),x>c.width&&(x=0),y<0&&(y=c.height),y>c.height&&(y=0),o.forEach(i=>cC({x:x,y:y},i)&&(alert("Game Over"),location.reload())),dC(),dO(),b.forEach(i=>{i.x+=10*Math.sin(i.r),i.y-=10*Math.cos(i.r),i.x<0||i.x>c.width||i.y<0||i.y>c.height?b.splice(b.indexOf(i),1):o.forEach(j=>cC(i,j)&&(b.splice(b.indexOf(i),1),o.splice(o.indexOf(j),1)))}),eT>=500&&(o.push(rO()),t=Date.now()),requestAnimationFrame(u);};
+      document.addEventListener("keydown",kD);
+      c.addEventListener("mousedown",mD);
+      u();
+    </script>
+  </body>
+</html>
